@@ -1,8 +1,3 @@
--- Gui to Lua
--- Version: 3.2
-
--- Instances:
-
 local Spawner = Instance.new("ScreenGui")
 local Main = Instance.new("Frame")
 local T = Instance.new("TextLabel")
