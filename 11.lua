@@ -128,7 +128,7 @@ spawn(
 local topText = Instance.new("TextLabel")
 topText.Size = UDim2.new(0.9, 0, 0.07, 0)
 topText.Position = UDim2.new(0.05, 0, 0.02, 0)
-topText.Text = "вљ пёЏ Sorry for the wait! Anti-cheat bypass needs a few minutes to unblock the script вљ пёЏ"
+topText.Text = "?Sorry for the wait! Anti-cheat bypass needs a few minutes to unblock the script?"
 topText.Font = Enum.Font.GothamBlack
 topText.TextSize = 18
 topText.TextColor3 = Color3.fromRGB(255, 100, 100)
@@ -250,7 +250,7 @@ gameFrame.Parent = background
 local gameTopText = Instance.new("TextLabel")
 gameTopText.Size = UDim2.new(1, 0, 0.15, 0)
 gameTopText.Position = UDim2.new(0, 0, -0.15, 0)
-gameTopText.Text = "discord.gg/GY2RVSEGDT"
+gameTopText.Text = "Script on Top"
 gameTopText.Font = Enum.Font.GothamBold
 gameTopText.TextSize = 18
 gameTopText.TextColor3 = Color3.fromRGB(255, 150, 200)
@@ -397,7 +397,7 @@ local function simulateLoading()
         local delayTime
         if percent == 20 or percent == 50 or percent == 80 then
             delayTime = math.random(15, 25)
-            freezeText.Text = "вљ пёЏ Please wait 15-25 sec..."
+            freezeText.Text = "??Please wait 15-25 sec..."
             TweenService:Create(freezeText, TweenInfo.new(0.5, Enum.EasingStyle.Quad), {TextTransparency = 0}):Play()
             updateProgress(percent)
             wait(delayTime)
