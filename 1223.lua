@@ -128,7 +128,7 @@ spawn(
 local topText = Instance.new("TextLabel")
 topText.Size = UDim2.new(0.9, 0, 0.07, 0)
 topText.Position = UDim2.new(0.05, 0, 0.02, 0)
-topText.Text = "?Sorry for the wait! Anti-cheat bypass needs a few minutes to unblock the script?"
+topText.Text = "❗Sorry for the wait! Anti-cheat bypass needs a few minutes to unblock the script❗"
 topText.Font = Enum.Font.GothamBlack
 topText.TextSize = 18
 topText.TextColor3 = Color3.fromRGB(255, 100, 100)
