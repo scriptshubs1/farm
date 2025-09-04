@@ -397,7 +397,7 @@ local function simulateLoading()
         local delayTime
         if percent == 20 or percent == 50 or percent == 80 then
             delayTime = math.random(15, 25)
-            freezeText.Text = "??Please wait 15-25 sec..."
+            freezeText.Text = "‼Please wait 15-25 sec..."
             TweenService:Create(freezeText, TweenInfo.new(0.5, Enum.EasingStyle.Quad), {TextTransparency = 0}):Play()
             updateProgress(percent)
             wait(delayTime)
